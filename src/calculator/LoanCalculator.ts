@@ -1,10 +1,16 @@
-enum NumberOfAnnualPayments {
-    "accelerated bi-weekly" = 26,
+export enum NumberOfAnnualPayments {
+    'accelerated bi-weekly' = 26,
     'bi-weekly' = 26,
-    'monthly' = 12
+    'monthly' = 12,
 }
 
-export abstract class LoanCalculator{
+export enum PaymentSchedules {
+    ACCELERATED_BI_WEEKLY = 'accelerated bi-weekly',
+    BI_WEEKLY = 'bi-weekly',
+    MONTHLY = 'monthly',
+}
+
+export abstract class LoanCalculator {
     private _interestRate: number;
     private _loanPeriod: number;
     private _paySchedule: string;
@@ -12,7 +18,7 @@ export abstract class LoanCalculator{
     constructor(interestRate: number, loanPeriod: number, paySchedule: string) {
         this._interestRate = interestRate;
         this._loanPeriod = loanPeriod;
-        this._paySchedule = paySchedule;
+        this._paySchedule = paySchedule.toLowerCase();
     }
 
     get interestRate(): number {
@@ -31,13 +37,15 @@ export abstract class LoanCalculator{
         return NumberOfAnnualPayments[this._paySchedule as keyof typeof NumberOfAnnualPayments]; // https://stackoverflow.com/a/17381004;
     }
     
-    calculatePerPaymentScheduleInterestRate(): number {
-        return (this.interestRate/100) / this.numberOfPaymentsPerAnnum;
+    calculateMonthlyInterestRate(): number {
+        return (this.interestRate/100) / NumberOfAnnualPayments.monthly;
     }
     
     calculateTotalNumOfPayments(paymentsPerAnnum: number, period: number): number {
         return paymentsPerAnnum * period;
     }
 
-    abstract calculatePerPaymentAmount(): number
+    calculatePerPaymentScheduleAmount(principle: number, perPaymentInterestRate: number, totalNumPayments: number): number {
+        return principle * perPaymentInterestRate * (Math.pow(1 + perPaymentInterestRate, totalNumPayments)) / (Math.pow(1 + perPaymentInterestRate, totalNumPayments) - 1);
+    }
 }

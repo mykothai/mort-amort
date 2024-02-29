@@ -8,7 +8,7 @@ router.get('/calculate/:price/:downPayment/:rate/:amortPeriod/:paySchedule', asy
     const downPayment = parseInt(req.params.downPayment);
     const interestRate = parseFloat(req.params.rate);
     const amortizationPeriod = parseInt(req.params.amortPeriod);
-    const paySchedule = req.params.paySchedule.toLowerCase();
+    const paySchedule = req.params.paySchedule;
 
     if (!Number(purchasePrice)) {
         res.status(400).json('Purchase price is invalid.');
@@ -37,7 +37,7 @@ router.get('/calculate/:price/:downPayment/:rate/:amortPeriod/:paySchedule', asy
 
     try {
         const mortgageCalculator = new MortgageCalculator(purchasePrice, downPayment, interestRate, amortizationPeriod, paySchedule);
-        const result = await mortgageCalculator.calculatePerPaymentAmount();
+        const result = await mortgageCalculator.calculateMortgagePayment();
     
         res.status(200).json(result);
 
