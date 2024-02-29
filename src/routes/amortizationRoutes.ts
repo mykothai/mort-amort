@@ -37,7 +37,7 @@ router.get('/calculate/:price/:downPayment/:rate/:amortPeriod/:paySchedule', asy
 
     try {
         const mortgageCalculator = new MortgageCalculator(purchasePrice, downPayment, interestRate, amortizationPeriod, paySchedule);
-        const result = await mortgageCalculator.calculateMortgage();
+        const result = await mortgageCalculator.calculatePerPaymentAmount();
     
         res.status(200).json(result);
 
