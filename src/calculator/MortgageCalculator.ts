@@ -48,19 +48,9 @@ export class MortgageCalculator extends LoanCalculator {
                 throw new Error(`Down payment of ${this._downPayment} is insufficient.`);
             };
 
-            const totalNumberOfPayments = this.calculateTotalNumOfPayments(
-                this.numberOfPaymentsPerAnnum,
-                this.loanPeriod
-            );
-    
             const monthlyInterestRate = this.calculateMonthlyInterestRate();
             const principle = this._propertyPrice - this._downPayment;
-            const monthlyPayment: number = this.calculatePerPaymentScheduleAmount(principle, monthlyInterestRate, totalNumberOfPayments);
-
-            console.log('total num payments', totalNumberOfPayments)
-            console.log('monthly payment: ', monthlyPayment)
-            console.log('pay sched: ', this.paySchedule)
-
+            const monthlyPayment: number = this.calculatePerPaymentScheduleAmount(principle, monthlyInterestRate, this.totalNumberOfPayments);
 
             switch(this.paySchedule) {
                 case ('accelerated bi-weekly'):
