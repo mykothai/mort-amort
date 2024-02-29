@@ -15,12 +15,12 @@ router.get('/calculate/:price/:downPayment/:rate/:amortPeriod/:paySchedule', asy
         return;
     }
 
-    if (!Number(downPayment)) {
+    if (!Number(downPayment) || downPayment < 0) {
         res.status(400).json('Down payment is invalid.');
         return;
     }
 
-    if (!Number(interestRate)) {
+    if (!Number(interestRate) || interestRate < 0) {
         res.status(400).json('Interest rate is invalid.');
         return;
     }
@@ -40,7 +40,7 @@ router.get('/calculate/:price/:downPayment/:rate/:amortPeriod/:paySchedule', asy
         const result = await mortgageCalculator.calculateMortgage();
     
         res.status(200).json(result);
-        
+
     } catch (error: any) {
         res.status(500).json(error.message);
     }
