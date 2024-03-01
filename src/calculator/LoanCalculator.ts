@@ -15,14 +15,12 @@ export abstract class LoanCalculator {
     private _interestRate: number;
     private _loanPeriod: number;
     private _paySchedule: string;
-    private _totalNumberOfPayments: number;
 
     constructor(principle: number, interestRate: number, loanPeriod: number, paySchedule: string) {
         this._principle = principle;
         this._interestRate = interestRate;
         this._loanPeriod = loanPeriod;
         this._paySchedule = paySchedule.toLowerCase();
-        this._totalNumberOfPayments = this.numberOfPaymentsPerAnnum * loanPeriod;
     }
 
     get principle(): number {
@@ -43,10 +41,6 @@ export abstract class LoanCalculator {
 
     get numberOfPaymentsPerAnnum(): number {
         return NumberOfAnnualPayments[this._paySchedule as keyof typeof NumberOfAnnualPayments]; // https://stackoverflow.com/a/17381004;
-    }
-
-    get totalNumberOfPayments(): number {
-        return this._totalNumberOfPayments;
     }
 
     calculateMonthlyInterestRate(): number {
