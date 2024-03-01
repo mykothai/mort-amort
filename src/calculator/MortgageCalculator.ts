@@ -55,25 +55,30 @@ export class MortgageCalculator extends LoanCalculator {
             const monthlyInterestRate = this.calculateMonthlyInterestRate();
             const monthlyPayment: number = this.calculateMonthlyPayment(this.principle, monthlyInterestRate);
 
+            let payment;
             switch(this.paySchedule) {
                 case ('accelerated bi-weekly'):
-                    return monthlyPayment / 2;
+                    payment = monthlyPayment / 2;
+                    break;
                 case ('bi-weekly'):
-                    return monthlyPayment * NumberOfAnnualPayments['monthly'] / NumberOfAnnualPayments['bi-weekly'];
+                    payment =  monthlyPayment * NumberOfAnnualPayments['monthly'] / NumberOfAnnualPayments['bi-weekly'];
+                    break;
                 default:
-                    return monthlyPayment;
+                    payment =  monthlyPayment;
             };
+
+            return parseFloat((payment).toFixed(2)); // toFixed() converts a number to a string so we need to parse the value
 
         } catch (error: any) {
             throw new Error(`Could not perform calculations. ${error.message}`);
-        }
-    }
+        };
+    };
 
     private isValidAmortizationPeriod(period: number) : boolean {
         return (period >= MortgageCalculator.MINIMUM_AMORTIZATION_PERIOD) 
         && (period <= MortgageCalculator.MAXIMUM_AMORTIZATION_PERIOD) 
         && (period % MortgageCalculator.MINIMUM_AMORTIZATION_PERIOD === 0);
-    }
+    };
 
     // https://www.canada.ca/en/financial-consumer-agency/services/mortgages/down-payment.html#toc0
     private isValidDownPayment(downPayment: number, propertyPrice: number) {
@@ -90,6 +95,6 @@ export class MortgageCalculator extends LoanCalculator {
             * MortgageCalculator.PURCHASE_PRICE_LOWER_THRESHOLD 
             + (MortgageCalculator.REQUIRED_DOWN_PAYMENT_PERCENT_TIER_2/100) 
             * (propertyPrice - MortgageCalculator.PURCHASE_PRICE_LOWER_THRESHOLD));
-        }
-    }
-}
+        };
+    };
+};
