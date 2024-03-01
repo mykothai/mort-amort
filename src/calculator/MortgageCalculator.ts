@@ -32,6 +32,10 @@ export class MortgageCalculator extends LoanCalculator {
                 throw new Error(`Pay schedule '${this.paySchedule}' is invalid.`);
             };
 
+            if (this.interestRate < 0 || this.interestRate > 100) {
+                throw new Error(`Interest rate must be between 0 and 100, inclusive.`);
+            };
+
             if (this._propertyPrice < 0) {
                 throw new Error(`Property price must be positive.`);
             };
