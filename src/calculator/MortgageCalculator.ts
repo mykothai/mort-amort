@@ -33,11 +33,11 @@ export class MortgageCalculator extends LoanCalculator {
             };
 
             if (this.interestRate < 0 || this.interestRate > 100) {
-                throw new Error(`Interest rate must be between 0 and 100, inclusive.`);
+                throw new Error('Interest rate must be between 0 and 100, inclusive.');
             };
 
             if (this._propertyPrice < 0) {
-                throw new Error(`Property price must be positive.`);
+                throw new Error('Property price must be positive.');
             };
 
             if (!this.isValidAmortizationPeriod(this.loanPeriod)) {

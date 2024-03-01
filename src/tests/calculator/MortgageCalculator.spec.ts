@@ -255,6 +255,23 @@ describe('MortgageCalculator class', () => {
             });
         });
 
+        describe('When the down payment is larger than the property price', () => {
+            let result: any;
+            const propertyPrice = 500000;
+            const downPayment = 500001;
+
+            describe('When I call calculateMortgagePayment', () => {
+                beforeEach(() => {
+                    mortgageCalculator = new MortgageCalculator(propertyPrice, downPayment, interestRate, amortizationPeriod, paySchedule);
+                    result = mortgageCalculator.calculateMortgagePayment();
+                });
+    
+                test('Then the correct payment per payment schedule is returned', () => {
+                    expect(result).toEqual(0);
+                });
+            });
+        });
+
         describe('When the down payment is insufficient given that the property price is greater than 500,000 and less than 1 million', () => {
             const propertyPrice = 750000;
             const downPayment = 25000 + 24999;
