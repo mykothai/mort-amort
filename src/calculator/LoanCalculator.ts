@@ -1,61 +1,49 @@
-export enum NumberOfAnnualPayments {
-    'accelerated bi-weekly' = 26,
-    'bi-weekly' = 26,
-    'monthly' = 12,
-}
-
-export enum PaymentSchedules {
-    ACCELERATED_BI_WEEKLY = 'accelerated bi-weekly',
-    BI_WEEKLY = 'bi-weekly',
-    MONTHLY = 'monthly',
-}
-
+/**
+ * Abstract class that calculates monthly loan payments and monthly interest rate
+ * 
+ * @param   principle the amount borrowed 
+ * @param   interestRate annual interest rate of loan
+ * @param   loanPeriod amount of time to pay off the loan in years
+ * @returns monthly interest rate or monthly payment in dollars
+ */
 export abstract class LoanCalculator {
     private _principle: number;
     private _interestRate: number;
     private _loanPeriod: number;
-    private _paySchedule: string;
 
-    constructor(principle: number, interestRate: number, loanPeriod: number, paySchedule: string) {
+    static MONTHS_IN_YEAR = 12;
+
+    constructor(principle: number, interestRate: number, loanPeriod: number) {
         this._principle = principle;
         this._interestRate = interestRate;
         this._loanPeriod = loanPeriod;
-        this._paySchedule = paySchedule.toLowerCase();
-    }
+    };
 
     get principle(): number {
         return this._principle;
-    }
+    };
 
     get interestRate(): number {
         return this._interestRate;
-    }
+    };
 
     get loanPeriod(): number {
         return this._loanPeriod;
-    }
-
-    get paySchedule(): string {
-        return this._paySchedule;
-    }
-
-    get numberOfPaymentsPerAnnum(): number {
-        return NumberOfAnnualPayments[this._paySchedule as keyof typeof NumberOfAnnualPayments]; // https://stackoverflow.com/a/17381004;
-    }
+    };
 
     calculateMonthlyInterestRate(): number {
-        return (this.interestRate) / NumberOfAnnualPayments.monthly;
-    }
+        return (this.interestRate) / LoanCalculator.MONTHS_IN_YEAR;
+    };
 
     calculateMonthlyPayment(principle: number, interestRate: number): number {
-        const numOfMonths = this.loanPeriod * NumberOfAnnualPayments['monthly'];
+        const numOfMonths = this.loanPeriod * LoanCalculator.MONTHS_IN_YEAR;
 
         // when interest rate is zero, divide principle by number of months in the loan period
         if (interestRate === 0) {
-            return principle / numOfMonths
+            return principle / numOfMonths;
         }
 
         const rateAsDecimal = interestRate / 100;
         return principle * rateAsDecimal * (Math.pow(1 + rateAsDecimal, numOfMonths)) / (Math.pow(1 + rateAsDecimal, numOfMonths) - 1);
-    }
-}
+    };
+};
