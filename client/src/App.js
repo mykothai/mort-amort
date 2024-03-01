@@ -21,9 +21,7 @@ function App() {
         await fetch(url)
           .then((res) => res.json())
           .then((data) => {
-            console.log(data)
             if (isNaN(+data)) {
-              console.log(true)
               setData(null)
               setHttpError(data)
             } else {
@@ -32,9 +30,12 @@ function App() {
             }
           })
           .catch((error) => {
+            setHttpError(null)
+            setData(data)
             setHttpError(
               'An unexpected error occurred, please try again later :('
             )
+            console.log(error)
           })
       }
 
