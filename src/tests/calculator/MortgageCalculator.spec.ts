@@ -1,4 +1,7 @@
 import { MortgageCalculator } from '../../calculator/MortgageCalculator';
+import { LoanCalculator } from '../../calculator/LoanCalculator';
+
+let loanCalculator = jest.mock('../../calculator/LoanCalculator');
 
 describe('MortgageCalculator class', () => {
 
@@ -16,12 +19,24 @@ describe('MortgageCalculator class', () => {
         
             describe('When I call calculateMortgagePayment', () => {
                 beforeEach(() => {
+                    jest.spyOn(LoanCalculator.prototype, 'calculateMonthlyInterestRate');
+                    jest.spyOn(LoanCalculator.prototype, 'calculateMonthlyPayment');
+
                     mortgageCalculator = new MortgageCalculator(propertyPrice, downPayment, interestRate, amortizationPeriod, paySchedule);
                     result = mortgageCalculator.calculateMortgagePayment();
                 });
     
                 test('Then the correct payment per payment schedule is returned', () => {
                     expect(result).toEqual(5180.93);
+                });
+
+                test('And calculateMonthlyInterestRate was called', () => {
+                    expect(LoanCalculator.prototype.calculateMonthlyInterestRate).toHaveBeenCalled();
+                });
+
+                test('And calculateMonthlyPayment was called with the correct parameters', () => {
+                    expect(LoanCalculator.prototype.calculateMonthlyPayment).toHaveBeenCalled();
+                    expect(LoanCalculator.prototype.calculateMonthlyPayment).toHaveBeenCalledWith(475000, 0.4675);
                 });
             });
         });
