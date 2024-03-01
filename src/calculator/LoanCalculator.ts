@@ -53,10 +53,15 @@ export abstract class LoanCalculator {
         return (this.interestRate) / NumberOfAnnualPayments.monthly;
     }
 
-    calculateMonthlyPayment(principle: number, perPaymentInterestRate: number): number {
-        const rateAsDecimal = perPaymentInterestRate/100;
+    calculateMonthlyPayment(principle: number, interestRate: number): number {
         const numOfMonths = this.loanPeriod * NumberOfAnnualPayments['monthly'];
-        
+
+        // when interest rate is zero, divide principle by number of months in the loan period
+        if (interestRate === 0) {
+            return principle / numOfMonths
+        }
+
+        const rateAsDecimal = interestRate / 100;
         return principle * rateAsDecimal * (Math.pow(1 + rateAsDecimal, numOfMonths)) / (Math.pow(1 + rateAsDecimal, numOfMonths) - 1);
     }
 }
