@@ -5,8 +5,8 @@ function App() {
   const [data, setData] = useState(null)
   const [inputFields, setInputFields] = useState({
     propertyPrice: '',
-    downPayment: 0,
-    interestRate: 5.61,
+    downPayment: '',
+    interestRate: '',
     amortizationPeriod: 5,
     paySchedule: 'Monthly',
   })
@@ -62,18 +62,23 @@ function App() {
   const validateValues = (inputValues) => {
     let errors = {}
 
-    if (!inputValues.propertyPrice) {
+    if (!inputValues.propertyPrice || isNaN(+inputValues.propertyPrice)) {
       errors.propertyPrice = 'Invalid property price'
     }
-    if (inputValues.downPayment <= 0) {
+    if (inputValues.downPayment <= 0 || isNaN(+inputValues.downPayment)) {
       errors.downPayment = 'Invalid down payment'
     }
-    if (!inputValues.interestRate || inputValues.interestRate <= 0) {
+    if (
+      !inputValues.interestRate ||
+      inputValues.interestRate <= 0 ||
+      isNaN(+inputValues.interestRate)
+    ) {
       errors.interestRate = 'Invalid interest rate'
     }
     if (
       !inputValues.amortizationPeriod ||
-      inputValues.amortizationPeriod % 5 !== 0
+      inputValues.amortizationPeriod % 5 !== 0 ||
+      isNaN(+inputValues.amortizationPeriod)
     ) {
       errors.amortizationPeriod = 'Invalid amortization period'
     }
