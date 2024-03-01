@@ -20,3 +20,6 @@ Build using Node.js/Typescript backend and React frontend.
 To run the application, please read:
 - [Backend Readme](https://github.com/mykothai/mort-amort/tree/main/backend#nodejs-backend)
 - [Frontend Readme](https://github.com/mykothai/mort-amort/tree/main/client#react-frontend)
+
+
+###### node v16.15.0

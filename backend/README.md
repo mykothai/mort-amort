@@ -1,23 +1,33 @@
 # NodeJs Backend
 
 ## Deploy Locally
-Navigate to `./backend` and run one of two scripts:
+### Optional: 
+Navigate to `./backend` and create a `.env` file and add 
+```
+PORT=8000
+```
+If the .env file or the PORT variable does not exist, the application will default to port `8000`.
 
-### `npm run dev`
+
+In the `./backend` folder, run one of two scripts:
+
+### 1. `npm run dev`
 
 Hot reloading is supported when this script is run.
 ```
+$ npm install // if repo cloned for the first time
 $ npm run dev
 ```
 
 This only deploys the backend on [http://localhost:8000](http://localhost:8000).\
 To deploy both backend and frontend together see 
 
-### `npm run start`
+### 2. `npm run start`
 
 
 To run the backend and the frontend together, use:
 ```
+$ npm install // if repo cloned for the first time
 $ npm run start
 ```
 

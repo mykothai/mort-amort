@@ -5,6 +5,7 @@
 Navigate to `./client` and run:
 
 ```
+$ npm install // if repo cloned for the first time
 $ npm start
 ```
 
