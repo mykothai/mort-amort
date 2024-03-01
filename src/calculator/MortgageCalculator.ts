@@ -19,9 +19,9 @@ export class MortgageCalculator extends LoanCalculator {
         downPayment: number,
         interestRate: number,
         amortizationPeriod: number,
-        paySchedule: string
+        paySchedule: string,
     ) {
-        super(interestRate, amortizationPeriod, paySchedule);
+        super(propertyPrice - downPayment, interestRate, amortizationPeriod, paySchedule);
         this._downPayment = downPayment;
         this._propertyPrice = propertyPrice;
     }
@@ -29,19 +29,19 @@ export class MortgageCalculator extends LoanCalculator {
     public calculateMortgagePayment() {
         try {
             if (!this.numberOfPaymentsPerAnnum) {
-                throw new Error(`Pay schedule '${this.paySchedule}' is invalid.`)
-            }
+                throw new Error(`Pay schedule '${this.paySchedule}' is invalid.`);
+            };
 
             if (this._propertyPrice < 0) {
                 throw new Error(`Property price must be positive.`);
-            }
+            };
 
             if (!this.isValidAmortizationPeriod(this.loanPeriod)) {
                 throw new Error(`Amortization period of ${this.loanPeriod} is invalid.`);
             };
 
             if (this._downPayment > this._propertyPrice) {
-                return 0
+                return 0;
             };
 
             if (!this.isValidDownPayment(this._downPayment, this._propertyPrice)) {
@@ -49,20 +49,19 @@ export class MortgageCalculator extends LoanCalculator {
             };
 
             const monthlyInterestRate = this.calculateMonthlyInterestRate();
-            const principle = this._propertyPrice - this._downPayment;
-            const monthlyPayment: number = this.calculatePerPaymentScheduleAmount(principle, monthlyInterestRate, this.totalNumberOfPayments);
+            const monthlyPayment: number = this.calculateMonthlyPayment(this.principle, monthlyInterestRate);
 
             switch(this.paySchedule) {
                 case ('accelerated bi-weekly'):
                     return monthlyPayment / 2;
                 case ('bi-weekly'):
-                    return monthlyPayment * NumberOfAnnualPayments['monthly'] / NumberOfAnnualPayments['bi-weekly']
+                    return monthlyPayment * NumberOfAnnualPayments['monthly'] / NumberOfAnnualPayments['bi-weekly'];
                 default:
                     return monthlyPayment;
-            }
+            };
 
         } catch (error: any) {
-            throw new Error(`Could not perform calculations. ${error.message}`)
+            throw new Error(`Could not perform calculations. ${error.message}`);
         }
     }
 

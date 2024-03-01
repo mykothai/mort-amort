@@ -11,16 +11,22 @@ export enum PaymentSchedules {
 }
 
 export abstract class LoanCalculator {
+    private _principle: number;
     private _interestRate: number;
     private _loanPeriod: number;
     private _paySchedule: string;
     private _totalNumberOfPayments: number;
 
-    constructor(interestRate: number, loanPeriod: number, paySchedule: string) {
+    constructor(principle: number, interestRate: number, loanPeriod: number, paySchedule: string) {
+        this._principle = principle;
         this._interestRate = interestRate;
         this._loanPeriod = loanPeriod;
         this._paySchedule = paySchedule.toLowerCase();
         this._totalNumberOfPayments = this.numberOfPaymentsPerAnnum * loanPeriod;
+    }
+
+    get principle(): number {
+        return this._principle;
     }
 
     get interestRate(): number {
@@ -42,12 +48,12 @@ export abstract class LoanCalculator {
     get totalNumberOfPayments(): number {
         return this._totalNumberOfPayments;
     }
-    
+
     calculateMonthlyInterestRate(): number {
         return (this.interestRate) / NumberOfAnnualPayments.monthly;
     }
 
-    calculatePerPaymentScheduleAmount(principle: number, perPaymentInterestRate: number, totalNumPayments: number): number {
+    calculateMonthlyPayment(principle: number, perPaymentInterestRate: number): number {
         const rateAsDecimal = perPaymentInterestRate/100;
         const numOfMonths = this.loanPeriod * NumberOfAnnualPayments['monthly'];
         
