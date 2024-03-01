@@ -1,4 +1,4 @@
-# BC Mortgage Calculator Web App
+# React Frontend
 ![site](image-1.png)
 
 ### Deploy locally
